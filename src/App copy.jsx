@@ -20,7 +20,7 @@ function App() {
   const video = useRef()
   const classifier = useRef()
   const mobilenet = useRef()
-  const canPlaySound = useRef(true)
+  const canPlaySound = useRef()
   const [touched, setTouched] = useState(false)
 
   const [step, setStep] = useState(0)
@@ -38,9 +38,9 @@ function App() {
     mobilenet.current = await mobilenetModule.load()
 
     console.log("setup done")
-
+    console.log("Không dơ tay lên trên mặt để train 1")
     setStep(0)
-    setNotification("Bước 1: Không dơ tay lên trên mặt giúp AI học")
+    setNotification("Không dơ tay lên trên mặt để train 1")
 
     initNotifications({ cooldown: 3000 })
   }
@@ -86,16 +86,12 @@ function App() {
       setStep(1)
       setShowTrain1Button(false)
       setShowTrain2Button(true)
-      setNotification(
-        "Bước 2: Chạm tay vào mặt rồi nhấn nút, trong quá trình hãy di chuyển tay khap mặt để AI học"
-      )
+      setNotification("Train 1 is complete. Click 'Train 2' to continue.")
     } else if (label === TOUCHED_LABEL) {
       setStep(2)
       setShowTrain2Button(false)
       setShowRunButton(true)
-      setNotification(
-        "Đã hoàn thành quá trình học. Nhấn nút 'Run' để chạy AI (* Có âm thanh khi cảnh báo, tắt tiếng trước khi quá muộn)"
-      )
+      setNotification("Train 2 is complete. You can now click 'Run.'")
     }
   }
 
@@ -162,22 +158,21 @@ function App() {
 
   return (
     <div className={`main ${touched ? "touched" : ""}`}>
-      <h1 className="title">Welcome to Luan 1st game</h1>
       <video ref={video} className="video" autoPlay></video>
       <div className="control">
         {showTrain1Button && step === 0 && (
           <button className="btn" onClick={() => train(NOT_TOUCH_LABEL)}>
-            Bắt Đầu
+            Train 1
           </button>
         )}
         {showTrain2Button && step === 1 && (
           <button className="btn" onClick={() => train(TOUCHED_LABEL)}>
-            Tiếp tục
+            Train 2
           </button>
         )}
         {showRunButton && step === 2 && (
           <button className="btn" onClick={() => run()}>
-            Chayyyyyyỵ
+            Run
           </button>
         )}
       </div>
