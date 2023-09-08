@@ -30,20 +30,22 @@ function App() {
   const [showRunButton, setShowRunButton] = useState(false)
 
   const init = async () => {
+    setStep(0)
+    setNotification("Quá trình đang khởi tạo, vui lòng chờ trong giây lát...")
     console.log("init...")
     await setupCamera()
     console.log("camera setup done")
 
     classifier.current = knnClassifier.create()
     mobilenet.current = await mobilenetModule.load()
-
     console.log("setup done")
 
-    setStep(0)
+    setStep(1)
     setNotification("Bước 1: Không dơ tay lên trên mặt giúp AI học")
 
     initNotifications({ cooldown: 3000 })
   }
+
   const setupCamera = () => {
     return new Promise((resolve, reject) => {
       navigator.getUserMedia =
@@ -83,14 +85,14 @@ function App() {
     }
 
     if (label === NOT_TOUCH_LABEL) {
-      setStep(1)
+      setStep(2)
       setShowTrain1Button(false)
       setShowTrain2Button(true)
       setNotification(
         "Bước 2: Chạm tay vào mặt rồi nhấn nút, trong quá trình hãy di chuyển tay khap mặt để AI học"
       )
     } else if (label === TOUCHED_LABEL) {
-      setStep(2)
+      setStep(3)
       setShowTrain2Button(false)
       setShowRunButton(true)
       setNotification(
@@ -165,17 +167,17 @@ function App() {
       <h1 className="title">Welcome to Luan 1st game</h1>
       <video ref={video} className="video" autoPlay></video>
       <div className="control">
-        {showTrain1Button && step === 0 && (
+        {showTrain1Button && step === 1 && (
           <button className="btn" onClick={() => train(NOT_TOUCH_LABEL)}>
             Bắt Đầu
           </button>
         )}
-        {showTrain2Button && step === 1 && (
+        {showTrain2Button && step === 2 && (
           <button className="btn" onClick={() => train(TOUCHED_LABEL)}>
             Tiếp tục
           </button>
         )}
-        {showRunButton && step === 2 && (
+        {showRunButton && step === 3 && (
           <button className="btn" onClick={() => run()}>
             Chayyyyyyỵ
           </button>
