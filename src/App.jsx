@@ -49,6 +49,10 @@ function App() {
           { video: true },
           (stream) => {
             video.current.srcObject = stream
+
+            // Đảo chiều camera
+            video.current.style.transform = "scaleX(-1)"
+
             video.current.addEventListener("loadeddata", resolve)
           },
           (error) => {
