@@ -130,7 +130,7 @@ function App() {
       result.label === TOUCHED_LABEL &&
       result.confidences[result.label] > TOUCHED_CONFIDENCE
     ) {
-      console.log("Touched")
+      setNotification("Chạm rùi")
       if (canPlaySound.current) {
         canPlaySound.current = false
         sound.play()
@@ -138,12 +138,15 @@ function App() {
       notify("Bé đang chạm tay vào mặt", { body: "Bé đang chạm tay vào mặt" })
       setTouched(true)
     } else {
-      console.log("Not touched")
+      setNotification("Không chạm tay")
       setTouched(false)
     }
 
     await sleep(200)
 
+    setStep(4)
+    setShowTrain2Button(false)
+    setShowRunButton(false)
     run()
   }
 
